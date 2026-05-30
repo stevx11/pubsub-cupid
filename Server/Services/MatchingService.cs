@@ -18,12 +18,12 @@ public class MatchingService : IMatchingService
 
         foreach (var candidate in candidates)
         {
-            // Ne šalje pismo osobi od same sebe
+            // ne salje pismo osobi od same sebe
             if (candidate.Username.Equals(recipient.Username,
                 StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            // Preskačemo blokirane korisnike
+            // preskace blokirane korisnike
             if (recipient.BlockedUsernames.Contains(candidate.Username))
                 continue;
 
@@ -46,7 +46,7 @@ public class MatchingService : IMatchingService
         if (recipient.City.Equals(candidate.City, StringComparison.OrdinalIgnoreCase))
             score += SameCityPoints;
 
-        // +20 slične godine
+        // +20 slicne godine
         if (Math.Abs(recipient.Age - candidate.Age) <= AgeDiffThreshold)
             score += SimilarAgePoints;
 

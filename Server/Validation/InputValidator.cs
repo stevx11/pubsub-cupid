@@ -14,11 +14,11 @@ public static class InputValidator
     public static ValidationResult ValidateUsername(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))
-            return ValidationResult.Fail("Korisničko ime ne sme biti prazno.");
+            return ValidationResult.Fail("Korisnicko ime ne sme biti prazno.");
         if (input.Length < 3 || input.Length > 30)
-            return ValidationResult.Fail("Korisničko ime mora imati između 3 i 30 karaktera.");
+            return ValidationResult.Fail("Korisnicko ime mora imati izmedju 3 i 30 karaktera.");
         if (!AlphanumericRegex.IsMatch(input))
-            return ValidationResult.Fail("Korisničko ime sme da sadrži samo slova, brojeve i '_'.");
+            return ValidationResult.Fail("Korisnicko ime sme da sadrzi samo slova, brojeve i '_'.");
         return ValidationResult.Ok();
     }
 
@@ -27,7 +27,7 @@ public static class InputValidator
         if (string.IsNullOrWhiteSpace(input))
             return ValidationResult.Fail("Grad ne sme biti prazan.");
         if (!CityRegex.IsMatch(input))
-            return ValidationResult.Fail("Naziv grada sadrži nedozvoljene karaktere.");
+            return ValidationResult.Fail("Naziv grada sadrzi nedozvoljene karaktere.");
         return ValidationResult.Ok();
     }
 
@@ -40,7 +40,7 @@ public static class InputValidator
         if (age <= 0)
             return ValidationResult.Fail("Godine moraju biti pozitivan broj.");
         if (age < 18 || age > 99)
-            return ValidationResult.Fail("Godine moraju biti između 18 i 99.");
+            return ValidationResult.Fail("Godine moraju biti izmedju 18 i 99.");
         return ValidationResult.Ok(age);
     }
 

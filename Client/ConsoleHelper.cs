@@ -1,8 +1,6 @@
 ﻿namespace HaoticniKupidon.Client;
 
-/// <summary>
-/// Pomoćna klasa za lepo formatiran i obojen konzolni ispis.
-/// </summary>
+// Pomocna klasa za lepo formatiran i obojen konzolni ispis
 public static class ConsoleHelper
 {
     private static readonly object _lock = new();
@@ -64,15 +62,13 @@ public static class ConsoleHelper
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("----------------------------------------");
-            Console.WriteLine("|       HAOTIČNI KUPIDON KLIJENT       |");
+            Console.WriteLine("|       HAOTICNI KUPIDON KLIJENT       |");
             Console.WriteLine("----------------------------------------");
             Console.ResetColor();
         }
     }
 
-    /// <summary>
-    /// Prikazuje primljeno ljubavno pismo na konzoli.
-    /// </summary>
+    // Prikazuje primljeno pismo na konzoli
     public static void PrintLetter(
         string senderUsername,
         string senderCity,
@@ -90,7 +86,7 @@ public static class ConsoleHelper
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"  Korisničko ime: {senderUsername}");
+            Console.WriteLine($"  Korisnicko ime: {senderUsername}");
             Console.WriteLine($"  Grad:           {senderCity}");
             Console.WriteLine($"  Godine:         {senderAge}");
 
@@ -111,9 +107,7 @@ public static class ConsoleHelper
         }
     }
 
-    /// <summary>
-    /// Čita unos od korisnika uz validaciju i ponavljanje u slučaju greške.
-    /// </summary>
+    // Cita unos od korisnika uz validaciju i ponavljanje u slucaju greske
     public static string ReadValidated(string prompt, Func<string, (bool isValid, string error)> validator)
     {
         while (true)

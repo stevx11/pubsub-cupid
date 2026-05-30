@@ -37,7 +37,7 @@ builder.Services.AddCors(opts =>
                          "https://localhost:5001")
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials();  // Obavezno za SignalR
+            .AllowCredentials();
     });
 });
 
@@ -50,9 +50,9 @@ app.MapHub<KupidonHub>("/kupidonHub");
 
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("");
-Console.WriteLine("     HAOTIČNI KUPIDON SERVER     ");
+Console.WriteLine("     HAOTICNI KUPIDON SERVER     ");
 Console.WriteLine("------------------------------------------");
-Console.WriteLine("   Pisma se šalju svakih 60 sekundi        ");
+Console.WriteLine("   Pisma se salju svakih 60 sekundi        ");
 Console.WriteLine("");
 
 Console.ResetColor();

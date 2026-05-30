@@ -2,7 +2,7 @@
 using HaoticniKupidon.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 
-// ─── Dobrodošlica ──────────────────────────────────────────────
+// ─── Welcome poruka ──────────────────────────────────────────────
 ConsoleHelper.PrintBanner();
 
 // ─── Konektovanje na server ────────────────────────────────────
@@ -17,9 +17,7 @@ var connection = new HubConnectionBuilder()
     ])
     .Build();
 
-// ─── Registracija SignalR event handlera ──────────────────────
-
-// Kupidon šalje ljubavno pismo
+// Kupidon salje ljubavno pismo
 connection.On<JsonElement>("ReceiveLoveLetter", async (letterJson) =>
 {
     // Deserijalizuj DTO
@@ -31,30 +29,30 @@ connection.On<JsonElement>("ReceiveLoveLetter", async (letterJson) =>
                             : letterJson.GetProperty("senderPhone").GetString();
     string message = letterJson.GetProperty("message").GetString()!;
 
-    // Ispiši primljeno pismo
+    // ispisi primljeno pismo
     ConsoleHelper.PrintLetter(senderUsername, senderCity, senderAge, senderPhone, message);
 
-    // Čekamo potvrdu korisnika
+    // cekamo potvrdu korisnika
     ConsoleHelper.Write("\n[Pritisnite ENTER da potvrdite prijem pisma...]",
         ConsoleColor.Yellow);
     Console.ReadLine();
 
-    // Šalji potvrdu serveru
+    // salji potvrdu serveru
     try
     {
         await connection.InvokeAsync<string>("AcknowledgeLetter");
-        ConsoleHelper.PrintSuccess("Prijem potvrđen. Možete sada primati nova pisma.");
+        ConsoleHelper.PrintSuccess("Prijem potvrdjen. Mozete sada primati nova pisma.");
     }
     catch (Exception ex)
     {
-        ConsoleHelper.PrintError($"Greška pri potvrdi: {ex.Message}");
+        ConsoleHelper.PrintError($"Greska pri potvrdi: {ex.Message}");
     }
 });
 
 // ─── Konekcija lifecycle events ────────────────────────────────
 connection.Reconnecting += ex =>
 {
-    ConsoleHelper.PrintWarning("Veza prekinuta. Pokušaj ponovnog povezivanja...");
+    ConsoleHelper.PrintWarning("Veza prekinuta. Pokusaj ponovnog povezivanja...");
     return Task.CompletedTask;
 };
 
@@ -75,21 +73,21 @@ ConsoleHelper.Write("Povezivanje na server...", ConsoleColor.Cyan);
 try
 {
     await connection.StartAsync();
-    ConsoleHelper.PrintSuccess($"Uspešno povezan na {ServerUrl}");
+    ConsoleHelper.PrintSuccess($"Uspesno povezan na {ServerUrl}");
 }
 catch (Exception ex)
 {
-    ConsoleHelper.PrintError($"Nije moguće povezati se: {ex.Message}");
-    ConsoleHelper.PrintError("Proverite da li je server pokrenut (cd Server && dotnet run).");
+    ConsoleHelper.PrintError($"Nije moguce povezati se: {ex.Message}");
+    ConsoleHelper.PrintError("Proverite da li je server pokrenut");
     Environment.Exit(1);
 }
 
 // ─── Prikupljanje podataka od korisnika ───────────────────────
 ConsoleHelper.WriteSectionHeader("REGISTRACIJA");
-ConsoleHelper.Write("Dobrodošli! Unesite Vaše podatke za registraciju.", ConsoleColor.White);
+ConsoleHelper.Write("Dobrodosli! Unesite Vase podatke za registraciju", ConsoleColor.White);
 
 string username = ConsoleHelper.ReadValidated(
-    prompt: "Korisničko ime",
+    prompt: "Korisnicko ime",
     validator: HaoticniKupidon.Client.Validators.ValidateUsername
 );
 
@@ -117,27 +115,27 @@ try
 
     if (result != "OK")
     {
-        ConsoleHelper.PrintError($"Registracija neuspešna: {result}");
+        ConsoleHelper.PrintError($"Registracija neuspesna: {result}");
         Environment.Exit(1);
     }
 
     ConsoleHelper.PrintSuccess(
-        $"Uspešno ste se prijavili kao '{username}' iz {city}!");
+        $"Uspesno ste se prijavili kao '{username}' iz {city}!");
 }
 catch (Exception ex)
 {
-    ConsoleHelper.PrintError($"Greška pri registraciji: {ex.Message}");
+    ConsoleHelper.PrintError($"Greska pri registraciji: {ex.Message}");
     Environment.Exit(1);
 }
 
-// ─── Glavna petlja — čekanje pisama i unos komandi ─────────────
-ConsoleHelper.WriteSectionHeader("ČEKANJE PISAMA");
+// ─── Glavna petlja - čekanje pisama i unos komandi ─────────────
+ConsoleHelper.WriteSectionHeader("CEKANJE PISAMA");
 ConsoleHelper.Write(
     "Kupidon će Vam poslati pismo svakih 60 sekundi.\n" +
     "Komande:\n  /block <username>  — blokira korisnika\n  /quit              — izlaz\n",
     ConsoleColor.Gray);
 
-// Petlja za čitanje komandi (paralelno sa SignalR event handlerima)
+// petlja za citanje komandi (paralelno sa SignalR event handlerima)
 var cts = new CancellationTokenSource();
 
 _ = Task.Run(async () =>
@@ -151,7 +149,7 @@ _ = Task.Run(async () =>
 
         if (input.Equals("/quit", StringComparison.OrdinalIgnoreCase))
         {
-            ConsoleHelper.Write("\nDoviđenja! 💔", ConsoleColor.Magenta);
+            ConsoleHelper.Write("\nDovidjenja!", ConsoleColor.Magenta);
             cts.Cancel();
             break;
         }
@@ -161,7 +159,7 @@ _ = Task.Run(async () =>
             string target = input[7..].Trim();
             if (string.IsNullOrWhiteSpace(target))
             {
-                ConsoleHelper.PrintError("Unesite korisničko ime za blokiranje: /block username");
+                ConsoleHelper.PrintError("Unesite korisnicko ime za blokiranje: /block username");
                 continue;
             }
 
@@ -181,12 +179,12 @@ _ = Task.Run(async () =>
         else
         {
             ConsoleHelper.PrintWarning(
-                $"Nepoznata komanda: '{input}'. Pokušajte /block <username> ili /quit.");
+                $"Nepoznata komanda: '{input}'. Pokusajte /block <username> ili /quit.");
         }
     }
 }, cts.Token);
 
-// Čekamo dok korisnik ne izađe
+// Cekamo dok korisnik ne izadje
 try
 {
     await Task.Delay(Timeout.Infinite, cts.Token);

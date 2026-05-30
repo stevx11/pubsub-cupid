@@ -1,9 +1,6 @@
 ﻿using System.Security.Cryptography;
 
 namespace HaoticniKupidon.Server.Utilities;
-
-// Koristimo RandomNumberGenerator — direktni naslednik RNGCryptoServiceProvider
-// koji je deprecated u .NET 6+ ali funkcionalno identičan
 public static class SecureRandom
 {
     public static int Next(int min, int max)

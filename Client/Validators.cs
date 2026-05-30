@@ -1,10 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-
 namespace HaoticniKupidon.Client;
 
-/// <summary>
-/// Klijentska validacija unosa. Iste provere kao na serveru
-/// </summary>
+// Klijentska validacija unosa. Iste provere kao na serveru
 public static class Validators
 {
     private static readonly Regex AlphanumericRegex =
@@ -17,11 +14,11 @@ public static class Validators
     public static (bool isValid, string error) ValidateUsername(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
-            return (false, "Korisničko ime ne sme biti prazno.");
+            return (false, "Korisnicko ime ne sme biti prazno.");
         if (input.Length < 3 || input.Length > 30)
-            return (false, "Korisničko ime mora imati između 3 i 30 karaktera.");
+            return (false, "Korisnicko ime mora imati između 3 i 30 karaktera.");
         if (!AlphanumericRegex.IsMatch(input.Trim()))
-            return (false, "Korisničko ime sme da sadrži samo slova, brojeve i '_'.");
+            return (false, "Korisnicko ime sme da sadrzi samo slova, brojeve i '_'.");
         return (true, "");
     }
 
@@ -30,7 +27,7 @@ public static class Validators
         if (string.IsNullOrWhiteSpace(input))
             return (false, "Grad ne sme biti prazan.");
         if (!CityRegex.IsMatch(input.Trim()))
-            return (false, "Naziv grada sadrži nedozvoljene karaktere.");
+            return (false, "Naziv grada sadrzi nedozvoljene karaktere.");
         return (true, "");
     }
 
@@ -43,7 +40,7 @@ public static class Validators
         if (age <= 0)
             return (false, "Godine moraju biti pozitivan broj.");
         if (age < 18 || age > 99)
-            return (false, "Godine moraju biti između 18 i 99.");
+            return (false, "Godine moraju biti izmedju 18 i 99.");
         return (true, "");
     }
 

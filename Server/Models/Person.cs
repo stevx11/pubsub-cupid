@@ -8,7 +8,7 @@ public class Person
     public string PhoneNumber { get; set; } = string.Empty;
     public string ConnectionId { get; set; } = string.Empty;
 
-    // True = čeka potvrdu korisnika, ne prima nova pisma
+    // True = ceka potvrdu korisnika, ne prima nova pisma
     public bool AwaitingAcknowledgement { get; set; } = false;
 
     // Blokirani korisnici

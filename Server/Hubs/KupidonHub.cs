@@ -16,16 +16,16 @@ public class KupidonHub : Hub
         _logger = logger;
     }
     
-    /// <summary>Registruje osobu za traženje partnera.</summary>
+    //registruje osobu za trazenje partnera
     public async Task<string> InitSinglePerson(RegisterPersonDto dto)
     {
         var connId = Context.ConnectionId;
 
         if (_store.TryGetByConnectionId(connId, out _))
-            return "GREŠKA: Već ste prijavljeni.";
+            return "GRESKA: Vec ste prijavljeni.";
 
         if (_store.UsernameExists(dto.Username))
-            return $"GREŠKA: Korisničko ime '{dto.Username}' je već zauzeto.";
+            return $"GRESKA: Korisnicko ime '{dto.Username}' je vec zauzeto.";
 
         var person = new Person
         {
@@ -37,7 +37,7 @@ public class KupidonHub : Hub
         };
 
         if (!_store.TryAdd(person))
-            return "GREŠKA: Prijava nije uspela. Pokušajte ponovo.";
+            return "GRESKA: Prijava nije uspela. Pokušajte ponovo.";
 
         _logger.LogInformation(
             "Registrovan: {Username} | {City} | {Age} god.",
@@ -47,13 +47,13 @@ public class KupidonHub : Hub
         return "OK";
     }
 
-    /// <summary>Potvrda da je osoba pročitala pismo - resetuje AwaitingAcknowledgement.</summary>
+    //potvrda da je osoba procitala pismo - resetuje AwaitingAcknowledgement
     public async Task<string> AcknowledgeLetter()
     {
         var connId = Context.ConnectionId;
 
         if (!_store.TryGetByConnectionId(connId, out var person) || person == null)
-            return "GREŠKA: Niste prijavljeni.";
+            return "GRESKA: Niste prijavljeni.";
 
         person.AwaitingAcknowledgement = false;
         _logger.LogInformation("{Username} potvrdio/la prijem.", person.Username);
@@ -62,19 +62,19 @@ public class KupidonHub : Hub
         return "OK";
     }
 
-    /// <summary>Blokira korisnika. Poziva se sa /block username.</summary>
+    //Blokira korisnika. Poziva se sa /block username
     public async Task<string> BlockUser(string targetUsername)
     {
         var connId = Context.ConnectionId;
 
         if (!_store.TryGetByConnectionId(connId, out var person) || person == null)
-            return "GREŠKA: Niste prijavljeni.";
+            return "GRESKA: Niste prijavljeni.";
 
         if (person.Username.Equals(targetUsername, StringComparison.OrdinalIgnoreCase))
-            return "GREŠKA: Ne možete blokirati sami sebe.";
+            return "GRESKA: Ne mozete blokirati sami sebe.";
 
         if (!_store.UsernameExists(targetUsername))
-            return $"GREŠKA: Korisnik '{targetUsername}' ne postoji.";
+            return $"GRESKA: Korisnik '{targetUsername}' ne postoji.";
 
         person.BlockedUsernames.Add(targetUsername);
         _logger.LogInformation(
@@ -91,7 +91,7 @@ public class KupidonHub : Hub
         if (_store.TryGetByConnectionId(connId, out var person) && person != null)
         {
             _store.Remove(connId);
-            _logger.LogInformation("👋 Odjavio/la se: {Username}", person.Username);
+            _logger.LogInformation("Odjavio/la se: {Username}", person.Username);
         }
 
         await base.OnDisconnectedAsync(exception);

@@ -44,7 +44,7 @@ public class CupidService : ICupidService
             return;
         }
 
-        _logger.LogInformation("[Kupidon] Šalje pisma za {Count} osoba...", allPersons.Count);
+        _logger.LogInformation("[Kupidon] salje pisma za {Count} osoba...", allPersons.Count);
 
         // Paralelno slanje svim osobama
         var tasks = allPersons.Select(r => SendToPersonAsync(r, allPersons, ct));
@@ -60,7 +60,7 @@ public class CupidService : ICupidService
         if (recipient.AwaitingAcknowledgement)
         {
             _logger.LogDebug(
-                "[Kupidon] {Username} čeka potvrdu. Preskačem.", recipient.Username);
+                "[Kupidon] {Username} čeka potvrdu. Preskacem.", recipient.Username);
             return;
         }
 
@@ -95,7 +95,7 @@ public class CupidService : ICupidService
             // Rollback flaga ako slanje nije uspelo
             recipient.AwaitingAcknowledgement = false;
             _logger.LogError(ex,
-                "[Kupidon] Greška pri slanju korisniku {Username}.", recipient.Username);
+                "[Kupidon] Greska pri slanju korisniku {Username}.", recipient.Username);
         }
     }
 }
